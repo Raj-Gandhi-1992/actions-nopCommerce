@@ -1,0 +1,32 @@
+name: dotnet-project
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build_the_binary:
+    name: Building the Binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/Presentation/Nop.Web/Nop.Web.csproj
+
+      - name: Build the project
+        run: dotnet build src/Presentation/Nop.Web/Nop.Web.csproj -c Release --no-restore
+
+      - name: Publish the project
+        run: dotnet publish src/Presentation/Nop.Web/Nop.Web.csproj -c Release -o demo
+
+      - name: Run the application
+        run: dotnet demo/Nop.Web.dll
