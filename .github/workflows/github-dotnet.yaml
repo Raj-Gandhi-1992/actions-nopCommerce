@@ -10,16 +10,14 @@ jobs:
     name: Building the Binary
     runs-on: self-hosted
 
+    env:
+      DOTNET_INSTALL_DIR: ${{ runner.temp }}/.dotnet
+      DOTNET_ROOT: ${{ runner.temp }}/.dotnet
+      PATH: ${{ runner.temp }}/.dotnet:${{ runner.temp }}/.dotnet/tools:${{ env.PATH }}
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-
-      # ✅ Force local installation path (avoids /usr/share/dotnet)
-      - name: Configure dotnet install path
-        run: |
-          mkdir -p "$HOME/.dotnet"
-          echo "DOTNET_ROOT=$HOME/.dotnet" >> $GITHUB_ENV
-          echo "$HOME/.dotnet" >> $GITHUB_PATH
 
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v4
@@ -41,8 +39,9 @@ jobs:
       - name: Copy Themes folder
         if: always()
         run: |
+          mkdir -p demo/Themes
           if [ -d "src/Presentation/Nop.Web/Themes" ]; then
-            cp -r src/Presentation/Nop.Web/Themes demo/Themes
+            cp -r src/Presentation/Nop.Web/Themes/* demo/Themes/
           fi
 
       - name: Run the application
