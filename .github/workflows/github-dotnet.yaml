@@ -28,5 +28,15 @@ jobs:
       - name: Publish the project
         run: dotnet publish src/Presentation/Nop.Web/Nop.Web.csproj -c Release -o demo
 
+      # ✅ Copy Themes folder to published output
+      - name: Copy Themes folder
+        if: always()
+        run: |
+          if [ -d "src/Presentation/Nop.Web/Themes" ]; then
+            cp -r src/Presentation/Nop.Web/Themes demo/Themes
+          fi
+
+      # ✅ Run from correct directory
       - name: Run the application
-        run: dotnet demo/Nop.Web.dll
+        working-directory: demo
+        run: dotnet Nop.Web.dll
