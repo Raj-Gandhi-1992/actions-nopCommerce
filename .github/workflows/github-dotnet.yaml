@@ -14,6 +14,9 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      - name: Create local dotnet directory
+        run: mkdir -p ~/.dotnet && echo "$HOME/.dotnet" >> $GITHUB_PATH
+
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v4
         with:
