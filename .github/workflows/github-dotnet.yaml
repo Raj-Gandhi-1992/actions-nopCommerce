@@ -10,14 +10,17 @@ jobs:
     name: Building the Binary
     runs-on: self-hosted
 
-    env:
-      DOTNET_INSTALL_DIR: ${{ runner.temp }}/.dotnet
-      DOTNET_ROOT: ${{ runner.temp }}/.dotnet
-      PATH: ${{ runner.temp }}/.dotnet:${{ runner.temp }}/.dotnet/tools:${{ env.PATH }}
-
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+
+      # ✅ Dynamically set DOTNET_ROOT and PATH for non-root install
+      - name: Configure local .NET path
+        run: |
+          mkdir -p "$HOME/.dotnet"
+          echo "DOTNET_ROOT=$HOME/.dotnet" >> $GITHUB_ENV
+          echo "$HOME/.dotnet" >> $GITHUB_PATH
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v4
@@ -36,6 +39,7 @@ jobs:
       - name: Publish the project
         run: dotnet publish src/Presentation/Nop.Web/Nop.Web.csproj -c Release -o demo
 
+      # ✅ Always create folder before copying
       - name: Copy Themes folder
         if: always()
         run: |
