@@ -8,7 +8,7 @@ on:
 jobs:
   build_the_binary:
     name: Building the Binary
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Check out the repository
