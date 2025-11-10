@@ -1,7 +1,7 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /src
-COPY nopCommerce/ .
+WORKDIR /task
+COPY ./ .
 RUN dotnet publish -c Release src/Presentation/Nop.Web -o /app/published
 
 # Runtime Stage
