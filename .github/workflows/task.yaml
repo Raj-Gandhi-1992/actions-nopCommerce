@@ -42,5 +42,5 @@ jobs:
         IMAGE_TAG: latest
       run: |
         docker build -t dev/nop .
-        docker tag dev/nop:latest dev/nop:latest 168034219757.dkr.ecr.ap-south-1.amazonaws.com/dev/nop:latest
-        docker push dev/nop:latest 168034219757.dkr.ecr.ap-south-1.amazonaws.com/dev/nop:latest
+        docker tag dev/nop:latest 168034219757.dkr.ecr.ap-south-1.amazonaws.com/dev/nop:latest
+        docker push 168034219757.dkr.ecr.ap-south-1.amazonaws.com/dev/nop:latest
