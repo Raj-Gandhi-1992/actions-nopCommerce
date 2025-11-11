@@ -52,3 +52,16 @@ jobs:
         format: 'table'
         severity: 'HIGH,CRITICAL'
         ignore-unfixed: true
+    - name: Setup kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+        chmod 600 $HOME/.kube/config
+
+    - name: Update kubeconfig
+      run: aws eks update-kubeconfig --name my-cluster --region ap-south-1
+
+    - name: Deploy manifests
+      run: |
+        kubectl apply -f manifests/deployment.yaml
+        kubectl apply -f manifests/service.yaml
