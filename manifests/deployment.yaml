@@ -5,7 +5,6 @@ metadata:
   labels:
     env: prod
     app: web
-  namespace: prodnamespace
 spec:
   minReadySeconds: 6
   replicas: 2
